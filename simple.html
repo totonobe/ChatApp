@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Chatアプリ</title>
+<style>
+    /* div {
+        width: 600px;
+    } */
+
+    .main-wrapper {
+    width:400px;
+    text-align: center;
+    margin: auto;
+    }
+
+    #output{
+        height: 400px;
+        overflow: auto;
+        width: auto;
+        height: 600px;
+        background-color: #7194c2; 
+    }
+
+    /* dl {
+        border-bottom: solid 1px #cccccc;
+        border-left: solid 0.5px #cccccc; 
+    } */
+
+    #header {
+    width: auto;
+    height: 40px;
+    background-color: #273148;
+    text-align: center;
+    color: #ffffff;
+    }
+
+    #header > p {
+    padding: 10px 0;
+    margin: 0;
+    text-align: center;
+    color: #ffffff;
+    }
+
+/* ここから自分timeline */
+    .baloon {
+    display: grid; /* グリッドレイアウト */
+    grid-template-rows: 30px;
+    grid-template-columns: 30px;
+    height: auto;
+    /* text-align: right; */
+    /* border: solid 0.3px #f7f7f7; / */
+    padding: 16px 0 ;
+    position: relative;
+    grid-column-gap: 10px;
+    }
+    
+    .icon {
+    /* アイコンを丸く切り取って表示する処理 */
+    grid-row: 1 / 2;
+    grid-column: 9 / 10;
+    margin-right: 16px;
+}
+
+img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.myname {
+    font-size: 6px;
+    grid-row: 2 / 3;
+    grid-column: 9 / 10;
+}
+
+.chatuser {
+    font-size: 6px;
+}
+
+.textarea {
+    background-color: rgba(133, 255, 72, 1.0);
+    border-radius: 10px;
+    grid-row: 1 / 2;
+    grid-column: 8 / 9;
+}
+
+.date {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    font-size: 8px;
+    color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    margin-right: 10px;
+}
+
+/* ここまで自分timeline */
+
+
+/* ここから相手timeline */
+.baloon_left {
+    display: grid; /* グリッドレイアウト */
+    grid-template-rows: 30px;
+    grid-template-columns: 30px;
+    height: auto;
+    text-align: left;
+    padding: 16px 0 ;
+    position: relative;
+    }
+    
+    .icon_left {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    margin-left: 16px;
+    }
+
+.myname_left {
+    font-size: 6px;
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+
+}
+
+.chatuser_left {
+    font-size: 6px;
+}
+
+.textarea_left {
+    background-color: rgba(133, 255, 72, 1.0);
+    border-radius: 10px;
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
+    text-align-last: left;
+}
+
+.date_left {
+    grid-row: 2 / 3;
+    grid-column: 6 / 7;
+    font-size: 8px;
+    color: #ffffff;
+    /* margin-right: 10px; */
+}
+
+/* ここまで相手timeline */
+
+
+
+/* ここからフッター */
+#form {
+    width: auto;
+    height: 30px;
+    border: 0.5px solid #f7f7f7;
+    background-color: #ffffff;
+    position: relative;
+}
+
+#sendtextarea{
+    width: 250px;
+    text-align-last: left;
+    position: absolute;
+    left: 8px;
+}
+
+#sendtext{
+    /* 角丸処理 */
+    width: 200px;
+    text-align-last: left;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+}
+
+/* #send {
+    width: 60px;
+    margin-right: 16px;
+    left: 200px;
+    position: absolute;
+    text-align: right;
+    
+} */
+
+#sendbutton{
+    /* potision:を使っていじる */
+    display: block;
+    width: 80px;
+    text-align: center;
+    margin-right: 16px;
+    background-color: #5485e2;
+    left: 230px;
+    color: #ffffff;
+    position: absolute;
+    
+}
+</style>
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+<div>
+    <!-- リスト表示 -->
+    <div class="main-wrapper">
+        <div id="header">
+            <p>Bさん</p>
+        </div>
+            <div id="output">   <!--timelineと同じ-->
+                <!-- <div id="baloon">
+                        <div id="icon"><img src="imgs/line.jpg" alt=""></div>
+                        <div id="myname"></div>
+                        <div id="chatuser"></div>
+                        <div id="textarea">これはテストです。</div>
+                        <div id="date">12/9_19:23</div>
+                </div> -->
+                
+            </div> 
+            <div id="form">
+                    <div id="sendtextarea"><input type="text" id="sendtext"></div>
+                    <div id="send"><input type="button" id="sendbutton" value="送信"></div>
+            </div>
+            <!-- <div>名前<input type="text" id="username"></div>
+            <div>
+                <textarea rows="5" id="text"></textarea>
+                <button id="send">送信</button>
+            </div> -->
+            <div>名前<input type="text" id="username"></div>
+            <div>
+                <ul>
+                    <li class="imgs" data-img="0"><img src="imgs/buke.png" width="100"></li>
+                    <li class="imgs" data-img="1"><img src="imgs/tuku.jpg" width="100"></li>
+                    <li class="imgs" data-img="2"><img src="imgs/caram.png" width="100"></li>
+                </ul>
+            </div>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+
+<!--/ コンテンツ表示画面 -->
+
+
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- JQuery -->
+
+
+<!--** 以下Firebase **-->
+
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCAXnDHUPQWgh92XCToeGOtD5IlIHD_BgU",
+    authDomain: "dev12-a26bf.firebaseapp.com",
+    databaseURL: "https://dev12-a26bf.firebaseio.com",
+    projectId: "dev12-a26bf",
+    storageBucket: "dev12-a26bf.appspot.com",
+    messagingSenderId: "735913264803"
+  };
+  firebase.initializeApp(config);
+
+//   var obj = document.getElementById("#output");
+
+//現在時刻取得
+function jikan() {
+    var time = new Date(); 
+
+    var year = time.getFullYear();
+    var month = time.getMonth()+1;
+    var day = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
+    var second = time.getSeconds();
+
+    if(second < 10) {
+        var second = "0" + time.getSeconds();
+    } 
+
+    if(minute < 10) {
+        var minute = "0" + time.getMinutes();
+    } 
+
+    if(hour < 10) {
+        var hour = "0" + time.getHours();
+    } 
+
+    return month + "/" + day + " " + hour +":"+ minute + ":" + second;
+}
+
+
+  //Enterで送信
+  $("#sendtext").on("keydown",function(e){
+      if(e.keyCode == 13){
+        msgPush();
+      };
+  });
+
+  //MSG送受信準備
+  var newPostref = firebase.database().ref();
+
+  //アイコン処理
+  let icons = 0;
+  const img = ["buke.png","tuku.jpg","caram.png"];
+  $(".imgs").on("click",function(){
+      d = $(this).attr("data-img");
+  });
+  
+  //送信用関数
+    function msgPush(){
+
+    newPostref.push({
+        username:$("#username").val(),//入り口で名前を入力させて、localStorageに保存、保存したやつをここで読み出すとログインした風になる？
+        text: $("#sendtext").val(),
+        time: jikan(),
+        icon: icons
+    });
+    $("#sendtext").val("");
+}
+
+  //送信用イベント
+  $("#send").on("click",function(){ //id=sendをクリックしたらfunction
+    msgPush();
+  });
+
+  //Submit:MSG送信
+
+
+  newPostref.on("child_added",function(data){
+      let v = data.val();
+      let k = data.key; //今日は使用しない keyを取得してデータを削除できる
+
+      //Timelineメッセージ作成
+      let str ="";
+
+        ////自分は右、相手は左
+        str += '<div id="'+ k +'" class="baloon">'
+        if (v.username == "me") {
+            str += '<div class="icon"><img src="imgs/buke.png" alt=""   width="30"></div>'; 
+            str += '<div class="myname">'+ v.username +'</div>';
+            str += '<div class="textarea">'+ v.text +'</div>';
+            str += '<div class="date">'+ v.time +'</div>';
+            str +='</div>';
+        } else {
+            //自分以外の人用の表示
+            // str += '<div id="'+ k +'" class="baloon_left">'
+            // str += '<div class="icon_left"><img src="imgs/tuku.jpg" alt=""   width="30"></div>';
+            // str += '<div class="myname_left>'+ v.username +'</div>';
+            // str += '<div class="textarea_left">'+ v.text +'</div>';
+            // str += '<div class="date_left">'+ v.time +'</div>';
+            // str +='</div>';
+            str += '<div class="icon_left"><img src="imgs/tuku.jpg" alt=""   width="30"></div>'; 
+            // str += `<div></div>`
+            str += '<div class="myname_left">'+ v.username +'</div>';
+            str += '<div class="textarea_left">'+ v.text +'</div>';
+            str += '<div class="date_left">'+ v.time +'</div>';
+            str +='</div>';
+        }
+        
+        //--------------------------------//
+
+
+        // output.innerHTML += str;
+
+    
+
+    //   let str ='<dl id = "'+ k +'"><dt><img src="imgs/'+img[v.icon]<br>'+"name:"+v.username+'</dt><dd>'+v.text+'</dd><dd>'+v.time+'</dl>';
+    // let str ='<p>'+v.username+'<br>'+v.text+'<br>'+v.time+'</p>'; アイコンを足す前の書き方
+  
+      //別な書き方
+    //   let str = "";
+
+    //   str += '<div id="'+ K +'" class="msg_main">'
+    //   str += '<div class=""msg_left">';
+    //   str += '<div class=""><img src="" alt="" class="icon '+ v.username +'" width="30"></div>';
+
+      $("#output").append(str);
+      $("#output").scrollTop($("#output")[0].scrollHeight);
+  });
+
+
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
