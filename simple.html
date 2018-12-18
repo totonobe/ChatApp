@@ -48,15 +48,13 @@
     grid-template-rows: 30px;
     grid-template-columns: 30px;
     height: auto;
-    /* text-align: right; */
-    /* border: solid 0.3px #f7f7f7; / */
     padding: 16px 0 ;
     position: relative;
     grid-column-gap: 10px;
     }
     
     .icon {
-    /* アイコンを丸く切り取って表示する処理 */
+
     grid-row: 1 / 2;
     grid-column: 9 / 10;
     margin-right: 16px;
@@ -65,7 +63,7 @@
 img {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border-radius: 50%;    /* アイコンを丸く切り取って表示する処理 */
 }
 
 .myname {
@@ -139,7 +137,6 @@ img {
     grid-column: 6 / 7;
     font-size: 8px;
     color: #ffffff;
-    /* margin-right: 10px; */
 }
 
 /* ここまで相手timeline */
@@ -163,11 +160,10 @@ img {
 }
 
 #sendtext{
-    /* 角丸処理 */
     width: 200px;
     text-align-last: left;
     background-color: #f7f7f7;
-    border-radius: 8px;
+    border-radius: 8px; /* 角丸処理 */
 }
 
 /* #send {
@@ -180,7 +176,6 @@ img {
 } */
 
 #sendbutton{
-    /* potision:を使っていじる */
     display: block;
     width: 80px;
     text-align: center;
@@ -202,16 +197,7 @@ img {
         <div id="header">
             <p>Bさん</p>
         </div>
-            <div id="output">   <!--timelineと同じ-->
-                <!-- <div id="baloon">
-                        <div id="icon"><img src="imgs/line.jpg" alt=""></div>
-                        <div id="myname"></div>
-                        <div id="chatuser"></div>
-                        <div id="textarea">これはテストです。</div>
-                        <div id="date">12/9_19:23</div>
-                </div> -->
-                
-            </div> 
+            <div id="output"></div> 
             <div id="form">
                     <div id="sendtextarea"><input type="text" id="sendtext"></div>
                     <div id="send"><input type="button" id="sendbutton" value="送信"></div>
@@ -328,8 +314,6 @@ function jikan() {
   });
 
   //Submit:MSG送信
-
-
   newPostref.on("child_added",function(data){
       let v = data.val();
       let k = data.key; //今日は使用しない keyを取得してデータを削除できる
@@ -339,7 +323,7 @@ function jikan() {
 
         ////自分は右、相手は左
         str += '<div id="'+ k +'" class="baloon">'
-        if (v.username == "me") {
+        if (v.username == "me") { //名前欄に"me"と入力した場合は右側になる
             str += '<div class="icon"><img src="imgs/buke.png" alt=""   width="30"></div>'; 
             str += '<div class="myname">'+ v.username +'</div>';
             str += '<div class="textarea">'+ v.text +'</div>';
@@ -354,30 +338,12 @@ function jikan() {
             // str += '<div class="date_left">'+ v.time +'</div>';
             // str +='</div>';
             str += '<div class="icon_left"><img src="imgs/tuku.jpg" alt=""   width="30"></div>'; 
-            // str += `<div></div>`
             str += '<div class="myname_left">'+ v.username +'</div>';
             str += '<div class="textarea_left">'+ v.text +'</div>';
             str += '<div class="date_left">'+ v.time +'</div>';
             str +='</div>';
         }
         
-        //--------------------------------//
-
-
-        // output.innerHTML += str;
-
-    
-
-    //   let str ='<dl id = "'+ k +'"><dt><img src="imgs/'+img[v.icon]<br>'+"name:"+v.username+'</dt><dd>'+v.text+'</dd><dd>'+v.time+'</dl>';
-    // let str ='<p>'+v.username+'<br>'+v.text+'<br>'+v.time+'</p>'; アイコンを足す前の書き方
-  
-      //別な書き方
-    //   let str = "";
-
-    //   str += '<div id="'+ K +'" class="msg_main">'
-    //   str += '<div class=""msg_left">';
-    //   str += '<div class=""><img src="" alt="" class="icon '+ v.username +'" width="30"></div>';
-
       $("#output").append(str);
       $("#output").scrollTop($("#output")[0].scrollHeight);
   });
