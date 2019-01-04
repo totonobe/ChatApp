@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/style.css">
+<title>Chatアプリ</title>
+</head>
+<body>
+
+<!-- コンテンツ表示画面 -->
+<div>
+    <div class="main-wrapper">
+        <div id="header">
+            <p>test</p>
+        </div>
+            <div id="output"></div> 
+            <div id="form">
+                    <div id="sendtextarea"><input type="text" id="sendtext"></div>
+                    <div id="send"><input type="button" id="sendbutton" value="送信"></div>
+            </div>
+            <div>名前<input type="text" id="username"></div>
+    </div>
+</div>
+
+<!--/ コンテンツ表示画面 -->
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- JQuery -->
+
+<!--** 以下Firebase **-->
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCAXnDHUPQWgh92XCToeGOtD5IlIHD_BgU",
+    authDomain: "dev12-a26bf.firebaseapp.com",
+    databaseURL: "https://dev12-a26bf.firebaseio.com",
+    projectId: "dev12-a26bf",
+    storageBucket: "dev12-a26bf.appspot.com",
+    messagingSenderId: "735913264803"
+  };
+  firebase.initializeApp(config);
+
+//現在時刻取得
+function jikan() {
+    var time = new Date(); 
+
+    var year = time.getFullYear();
+    var month = time.getMonth()+1;
+    var day = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
+    var second = time.getSeconds();
+
+    if(second < 10) {
+        var second = "0" + time.getSeconds();
+    } 
+
+    if(minute < 10) {
+        var minute = "0" + time.getMinutes();
+    } 
+
+    if(hour < 10) {
+        var hour = "0" + time.getHours();
+    } 
+
+    return month + "/" + day + " " + hour +":"+ minute + ":" + second;
+}
+
+  //Enterで送信
+  $("#sendtext").on("keydown",function(e){
+      if(e.keyCode == 13){
+        msgPush();
+      };
+  });
+
+  //MSG送受信準備
+  var newPostref = firebase.database().ref();
+
+  //アイコン処理
+  let icons = 0;
+  const img = ["buke.png","tuku.jpg","caram.png"];
+  $(".imgs").on("click",function(){
+      d = $(this).attr("data-img");
+  });
+  
+  //送信用関数
+    function msgPush(){
+
+    newPostref.push({
+        username:$("#username").val(),
+        text: $("#sendtext").val(),
+        time: jikan(),
+        icon: icons
+    });
+    $("#sendtext").val("");
+}
+
+  //送信用イベント
+  $("#send").on("click",function(){ //id=sendをクリックしたらfunction
+    msgPush();
+  });
+
+  //Submit:MSG送信
+  newPostref.on("child_added",function(data){
+      let v = data.val();
+      let k = data.key; //今日は使用しない keyを取得してデータを削除できる
+
+      //Timelineメッセージ作成
+      let str ="";
+
+        ////自分は右、相手は左
+        str += '<div id="'+ k +'" class="baloon">'
+        if (v.username == "me") { //名前欄に"me"と入力した場合は右側になる
+            str += '<div class="icon"><img src="imgs/buke.png" alt=""   width="30"></div>'; 
+            str += '<div class="myname">'+ v.username +'</div>';
+            str += '<div class="textarea">'+ v.text +'</div>';
+            str += '<div class="date">'+ v.time +'</div>';
+            str +='</div>';
+        } else {
+            //自分以外の人用の表示
+            str += '<div class="icon_left"><img src="imgs/tuku.jpg" alt=""   width="30"></div>'; 
+            str += '<div class="myname_left">'+ v.username +'</div>';
+            str += '<div class="textarea_left">'+ v.text +'</div>';
+            str += '<div class="date_left">'+ v.time +'</div>';
+            str +='</div>';
+        }
+        
+      $("#output").append(str);
+      $("#output").scrollTop($("#output")[0].scrollHeight);
+  });
+</script>
+</body>
+</html>
